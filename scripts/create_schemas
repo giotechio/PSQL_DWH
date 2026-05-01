@@ -1,1 +1,14 @@
+/*
+Create database and scheemas
+Script purpose:
+after creating a database in POSTGRES , create three schemas within the database:
+'rawdata' , 'cleandata' and 'businessdata'
+
+*/
+
+-- create schemas
+
+CREATE SCHEMA rawdata;
+CREATE SCHEMA cleandata;
+CREATE SCHEMA businessdata;
 
