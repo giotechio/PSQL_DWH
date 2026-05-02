@@ -2,13 +2,50 @@
 Create database and scheemas
 Script purpose:
 after creating a database in POSTGRES , create three schemas within the database:
-'rawdata' , 'cleandata' and 'businessdata'
+'rawdata' - for loading raw data from the dataset, 
+'cleandata' - for cleansing data 
+and 'businessdata' - ready for datamarts or other use in analytics etc.
+
+The script checks if schemas exists and creates them afterwards.
 
 */
 
--- create schemas
+-- Create scheemas
 
-CREATE SCHEMA rawdata;
-CREATE SCHEMA cleandata;
-CREATE SCHEMA businessdata;
+--CREATE SCHEMA rawdata;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = 'rawdata') THEN
+        CREATE SCHEMA rawdata;
+        RAISE NOTICE 'Schema "rawdata" created.';
+    ELSE
+        RAISE NOTICE 'Schema "rawdata" already exists.';
+    END IF;
+END $$;
+
+--CREATE SCHEMA cleandata;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = 'cleandata') THEN
+        CREATE SCHEMA cleandata;
+        RAISE NOTICE 'Schema "cleandata" created.';
+    ELSE
+        RAISE NOTICE 'Schema "cleandata" already exists.';
+    END IF;
+END $$;
+
+--CREATE SCHEMA businessdata;
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = 'businessdata') THEN
+        CREATE SCHEMA businessdata;
+        RAISE NOTICE 'Schema "businessdata" created.';
+    ELSE
+        RAISE NOTICE 'Schema "businessdata" already exists.';
+    END IF;
+END $$;
+
+
 
