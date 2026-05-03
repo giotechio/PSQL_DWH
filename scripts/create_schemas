@@ -2,50 +2,33 @@
 Create database and scheemas
 Script purpose:
 after creating a database in POSTGRES , create three schemas within the database:
-'rawdata' - for loading raw data from the dataset, 
-'cleandata' - for cleansing data 
-and 'businessdata' - ready for datamarts or other use in analytics etc.
+'raw_data' - for loading raw data from the dataset, 
+'clean_data' - for cleansing data 
+and 'business_data' - ready for datamarts or other use in analytics etc.
 
-The script checks if schemas exists and creates them afterwards.
+The script checks if schemas exists and, if not, creates them afterwards.
 
 */
+-- Database: datawarehouse
 
--- Create scheemas
+-- DROP DATABASE IF EXISTS datawarehouse;
 
---CREATE SCHEMA rawdata;
+CREATE DATABASE datawarehouse
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'en_GB.UTF-8'
+    LC_CTYPE = 'en_GB.UTF-8'
+    LOCALE_PROVIDER = 'libc'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
 
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = 'rawdata') THEN
-        CREATE SCHEMA rawdata;
-        RAISE NOTICE 'Schema "rawdata" created.';
-    ELSE
-        RAISE NOTICE 'Schema "rawdata" already exists.';
-    END IF;
-END $$;
 
---CREATE SCHEMA cleandata;
+-- CREATE SCHEMAS
 
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = 'cleandata') THEN
-        CREATE SCHEMA cleandata;
-        RAISE NOTICE 'Schema "cleandata" created.';
-    ELSE
-        RAISE NOTICE 'Schema "cleandata" already exists.';
-    END IF;
-END $$;
-
---CREATE SCHEMA businessdata;
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = 'businessdata') THEN
-        CREATE SCHEMA businessdata;
-        RAISE NOTICE 'Schema "businessdata" created.';
-    ELSE
-        RAISE NOTICE 'Schema "businessdata" already exists.';
-    END IF;
-END $$;
-
+CREATE SCHEMA IF NOT EXISTS raw_data;
+CREATE SCHEMA IF NOT EXISTS clean_data;
+CREATE SCHEMA IF NOT EXISTS business_data;
 
 
