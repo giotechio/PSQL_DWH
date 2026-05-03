@@ -1,32 +1,47 @@
 /*
 In order to import CSV file data into postgres there are two methods
-1. with COPY FROM command
+1. with COPY FROM command ( first truncate the table and then insert new data to ensure updated data is inserted )
 and
 2. with PgAdmin GUI interface ( import/export Data)
-This is the easier method as long as COPY FROM fails with access denial and the workarround is pretty hards for newcomers
+
+!! This is the easier method as long as COPY FROM fails with access denial and the workarround gets pretty hard
 
 */
 
 
 -- importing data from CSV files
-
+TRUNCATE TABLE raw_data.crm_cust_info;
 COPY raw_data.crm_cust_info(cst_id,cst_key,cst_firstname,cst_lastname,cst_marital_status,cst_gndr,cst_create_date)
-FROM '/home/glinux/Documents/DWH_project/datasets/source_crm/cust_info.csv' DELIMITER ',' CSV HEADER
+FROM '/home/glinux/Documents/DWH_project/datasets/source_crm/cust_info.csv' 
+WITH (FORMAT CSV, HEADER True, DELIMITER ',' ENCODING 'UTF8')
 ;
 
-COPY raw_data.crm_cust_info(prd_id,prd_key,prd_nm,prd_cost,prd_line,prd_start_dt,prd_end_dt)
-FROM '/home/glinux/Documents/DWH_project/datasets/source_crm/prd_info.csv' DELIMITER ',' CSV HEADER
-;
-COPY raw_data.crm_cust_info(sls_ord_num,sls_prd_key,sls_cust_id,sls_order_dt,sls_ship_dt,sls_due_dt,sls_sales,sls_quantity,sls_price)
-FROM '/home/glinux/Documents/DWH_project/datasets/source_crm/sales_details.csv' DELIMITER ',' CSV HEADER
+TRUNCATE TABLE raw_data.crm_prd_info; 
+COPY raw_data.crm_prd_info(prd_id,prd_key,prd_nm,prd_cost,prd_line,prd_start_dt,prd_end_dt)
+FROM '/home/glinux/Documents/DWH_project/datasets/source_crm/prd_info.csv' 
+WITH (FORMAT CSV, HEADER True, DELIMITER ',' ENCODING 'UTF8')
 ;
 
-COPY raw_data.crm_cust_info(CID,BDATE,GEN)
-FROM '/home/glinux/Documents/DWH_project/datasets/source_erp/CUST_AZ12.csv' DELIMITER ',' CSV HEADER
+TRUNCATE TABLE raw_data.crm_sales_details;
+COPY raw_data.crm_sales_details(sls_ord_num,sls_prd_key,sls_cust_id,sls_order_dt,sls_ship_dt,sls_due_dt,sls_sales,sls_quantity,sls_price)
+FROM '/home/glinux/Documents/DWH_project/datasets/source_crm/sales_details.csv' 
+WITH (FORMAT CSV, HEADER True, DELIMITER ',' ENCODING 'UTF8')
 ;
-COPY raw_data.crm_cust_info(CID,CNTRY)
-FROM '/home/glinux/Documents/DWH_project/datasets/source_erp/loc_a101.csv' DELIMITER ',' CSV HEADER
+
+TRUNCATE TABLE raw_data.erp_CUST_AZ12;
+COPY raw_data.erp_CUST_AZ12(CID,BDATE,GEN)
+FROM '/home/glinux/Documents/DWH_project/datasets/source_erp/CUST_AZ12.csv' 
+WITH (FORMAT CSV, HEADER True, DELIMITER ',' ENCODING 'UTF8')
 ;
-COPY raw_data.crm_cust_info(ID,CAT,SUBCAT,MAINTENANCE)
-FROM '/home/glinux/Documents/DWH_project/datasets/source_erp/px_cat_g1v2.csv' DELIMITER ',' CSV HEADER
+
+TRUNCATE TABLE raw_data.erp_loc_a101;
+COPY raw_data.erp_loc_a101(CID,CNTRY)
+FROM '/home/glinux/Documents/DWH_project/datasets/source_erp/loc_a101.csv'
+WITH (FORMAT CSV, HEADER True, DELIMITER ',' ENCODING 'UTF8')
+;
+
+TRUNCATE TABLE raw_data.erp_px_cat_g1v2;
+COPY raw_data.crm_px_cat_g1v2(ID,CAT,SUBCAT,MAINTENANCE)
+FROM '/home/glinux/Documents/DWH_project/datasets/source_erp/px_cat_g1v2.csv' 
+WITH (FORMAT CSV, HEADER True, DELIMITER ',' ENCODING 'UTF8')
 ;
