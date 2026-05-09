@@ -1,6 +1,6 @@
 /*
 In order to import CSV file data into postgres there are two methods
-1. with COPY FROM command ( first truncate the table and then insert new data to ensure updated data is inserted )
+1. with COPY FROM command .... ( first truncate the table and then insert new data to ensure updated data is inserted )
 and
 2. with PgAdmin GUI interface ( import/export Data)
 
